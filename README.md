@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ``` 
 - В папке с файлом manage.py выполните команду:
 ```
-python3 manage.py runserver
+python manage.py runserver
 ```
 ### Авторы
 GerG
