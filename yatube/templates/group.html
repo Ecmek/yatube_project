@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Записи сообщества Лeв Толстой | Yatube{% endblock %}
-{% block header %}Записи сообщества Лeв Толстой | Yatube{% endblock %}
+{% block title %} {{ group.description }} | Yatube{% endblock %}
+{% block header %} {{ group.description }} | Yatube{% endblock %}
 {% block content %}
 
     {% for post in posts %} {% ifchanged %}
