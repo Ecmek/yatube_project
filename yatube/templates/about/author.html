@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+  <main role="main" class="container">
+    <div class="row">
+      <!-- Левый вспомогательный блок -->
+      <div class="col-md-6 mb-3 mt-1">
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <div class="h3 text-center">
+                  Об авторе проекта
+                </div> 
+              </li>
+              <li class="list-group-item">
+                <div class="h6 text-muted">
+                  <img src='{% static "media/my_photo.jpg" %}'
+                      alt='фотография' style ='width: 100%;'>
+                </div>
+              </li>
+            </ul>                                               
+          </div>                    
+        </div>                
+      </div>
+      <!-- Тело страницы -->
+      <div class="col-md-6">
+        <div class="card-body">                    
+          <div class="card-text text-center">
+            <h3>Приветсвую всех!</h3>
+            <p>Меня зовут Герман Артуров, вначале марта 2021 года я стал изучать язык программирования Python, в
+               частности фреймворк <a href="{% url 'about:tech' %}">Django</a>, на котором написан данный сайт.</p>
+            <div class="text-left">
+              <h3>Мои контакты</h3>
+              <p><a href="https://github.com/ecmek" target="_blank"><img src='{% static "media/github_icon.png" %}'
+                  alt='GitHub' width="50" height="50"></a> Мой GitHub</p>
+              <p><a href="https://vk.com/ecmek" target="_blank"><img src='{% static "media/vk_icon.png" %}'
+                  alt='VK' width="50" height="50"></a> Мой VK</p>
+              <p><a href="https://www.instagram.com/germon4ik_/" target="_blank"><img src='{% static "media/instagram_icon.png" %}'
+                  alt='instagram' width="50" height="50"></a> Мой instagram</p>
+              <p><a href="https://telegram.me/Ecmek" target="_blank"><img src='{% static "media/telegram_icon.png" %}'
+                  alt='Telegram' width="50" height="50"></a> Мой Telegram</p>
+            </div>
+          </div>                    
+        </div>                
+      </div>            
+    </div>        
+  </main>
+{% endblock %}
