@@ -1,4 +1,8 @@
+import datetime as dt
+from django.utils import timezone
+
 from django.db import models
+from froala_editor.fields import FroalaField
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -26,7 +30,7 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    text = models.TextField(
+    text = FroalaField(
         verbose_name='Текст статьи',
         help_text='Что у вас нового?'
     )
@@ -62,6 +66,10 @@ class Post(models.Model):
     def __str__(self):
         return self.text[:15]
 
+    def is_recently_pub(self):
+        now = timezone.now()
+        return self.pub_date >= (now - dt.timedelta(hours=1))
+
 
 class Comment(models.Model):
     post = models.ForeignKey(
@@ -74,7 +82,7 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='Автор комментария',
     )
-    text = models.TextField(
+    text = FroalaField(
         verbose_name='Комментарий',
         help_text='Напишите комменатрий',
     )
@@ -90,6 +98,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[:15]
+
+    def is_recently_pub(self):
+        now = timezone.now()
+        return self.created >= (now - dt.timedelta(minutes=20))
 
 
 class Follow(models.Model):

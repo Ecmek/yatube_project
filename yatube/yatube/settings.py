@@ -26,12 +26,11 @@ SECRET_KEY = '52wwx7yrf6^%bjlcx1(l^9z#ley^s38hwqh*6vrm=7g)7@x*k$'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*'
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver',
 ]
-# 'localhost',
-# '127.0.0.1',
-# '[::1]',
-# 'testserver',
 
 CACHES = {
     'default': {
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'about.apps.AboutConfig',
     'sorl.thumbnail',
     'debug_toolbar',
+    'froala_editor',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +138,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -150,3 +149,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+FROALA_EDITOR_PLUGINS = ('align', 'char_counter', 'code_beautifier' ,'code_view', 'colors', 'draggable', 'emoticons',
+        'entities', 'file', 'font_family', 'font_size', 'fullscreen', 'image_manager', 'image', 'inline_style',
+        'line_breaker', 'link', 'lists', 'paragraph_format', 'paragraph_style', 'quick_insert', 'quote', 'save', 'table',
+        'url', 'video')

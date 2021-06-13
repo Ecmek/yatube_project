@@ -10,14 +10,15 @@ from .forms import CommentForm, PostForm
 paginator_pages = 10
 
 
-@cache_page(20)
+# @cache_page(20)
 def index(request):
     latest = Post.objects.select_related('author', 'group').prefetch_related(
         'comments')
     paginator = Paginator(latest, paginator_pages)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'index.html', {'page': page})
+    form = PostForm()
+    return render(request, 'index.html', {'page': page, 'form': form})
 
 
 def group_posts(request, slug):
@@ -29,7 +30,7 @@ def group_posts(request, slug):
     page = paginator.get_page(page_number)
     return render(request, 'group.html', {'group': group, 'page': page})
 
-
+# @cache_page(20)
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     posts = author.posts.select_related('group').prefetch_related('comments')
@@ -97,6 +98,8 @@ def post_edit(request, username, post_id):
     if request.user.username != username:
         return redirect('posts:post', username, post_id)
     post = get_object_or_404(Post, author__username=username, id=post_id)
+    if post.is_recently_pub == False:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     form = PostForm(
         request.POST or None, files=request.FILES or None, instance=post
     )
@@ -137,6 +140,15 @@ def profile_follow(request, username):
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(user=request.user, author=author).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def post_delete(request, username, post_id):
+    if request.user.username != username:
+        return redirect('posts:post', username, post_id)
+    post = get_object_or_404(Post, author__username=username, id=post_id)
+    post.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

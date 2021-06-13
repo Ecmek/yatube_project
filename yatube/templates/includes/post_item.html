@@ -1,19 +1,19 @@
 <div class="card mb-3 mt-1 shadow-sm">
-
     <!-- Отображение картинки -->
     {% load thumbnail %}
-    {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
-      <img class="card-img" src="{{ im.url }}">
+    {% thumbnail post.image "930x339" as im %}
+      <img class="card-img" src="{{ im.url }}" height="350">
     {% endthumbnail %}
     <!-- Отображение текста поста -->
-    <div class="card-body">
-      <p class="card-text">
-        <!-- Ссылка на автора через @ -->
-        <a name="post_{{ post.id }}" href="{% url 'posts:profile' post.author.username %}">
-          <strong class="d-block text-gray-dark">@{{ post.author }}</strong>
-        </a>
-        {{ post.text|linebreaksbr }}
-      </p>
+  <div class="card-body">
+    <!-- Ссылка на автора через @ -->
+    <a name="post_{{ post.id }}" href="{% url 'posts:profile' post.author.username %}">
+    <strong class="d-block text-gray-dark">@{{ post.author }}</strong></a>
+    <p class="card-text">
+    {% autoescape off %}
+    {{ post.text }}
+    {% endautoescape %}
+    </p>
   
       <!-- Если пост относится к какому-нибудь сообществу, то отобразим ссылку на него через # -->
       {% if post.group %}
@@ -21,28 +21,44 @@
           <strong class="d-block text-gray-dark">#{{ post.group.title }}</strong>
         </a>
       {% endif %}
-  
+      {% if post.comments.exists %}
+      <div>
+        Комментариев: {{ post.comments.count }}
+      </div>
+      {% endif %}
       <!-- Отображение ссылки на комментарии -->
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          {% if post.comments.exists %}
-            <div>
-              Комментариев: {{ post.comments.count }}
-            </div>
-          {% endif %}
           <a class="btn btn-sm btn-primary" href="{% url 'posts:post' post.author.username post.id %}" role="button">
             Добавить комментарий
           </a>
             <!-- Ссылка на редактирование поста для автора -->
           {% if user == post.author %}
-            <a class="btn btn-sm btn-info" href="{% url 'posts:post_edit' post.author.username post.id %}" role="button">
+            <a class="btn btn-sm btn-info {% if post.is_recently_pub %}{% else %} disabled {% endif %}" href="{% url 'posts:post_edit' post.author.username post.id %}" role="button">
               Редактировать
             </a>
+            <a class="btn btn-sm btn-danger" roloe="button" data-toggle="modal" data-target="#post-delete-{{post.id}}" href="#">
+              Удалить</a>
           {% endif %}
         </div>
-  
         <!-- Дата публикации поста -->
         <small class="text-muted">{{ post.pub_date }}</small>
       </div>
+  </div>
+</div>
+
+<!-- Всплывающиее окно подтверждения удаления -->
+<div id="post-delete-{{post.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100 text-center">Подтверждения действия</h4>
+      </div>
+      <div class="modal-body text-center">Вы уверены что хотите удалить?</div>
+      <div class="modal-footer">
+        <a class="btn btn-danger" type="button" href="{% url 'posts:post_delete' post.author.username post.id %}">Удалить</a>
+        <a class="btn btn-secondary" type="button" data-dismiss="modal">Отмена</a>
+      </div>
     </div>
   </div>
+</div>

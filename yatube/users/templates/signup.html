@@ -10,10 +10,10 @@
             <div class="card-header">Зарегистрироваться</div>
             <div class="card-body">
                 
-                {% for error in form.errors %}
-                  <div class="alert alert-danger" role="alert">
-                      {{ error|escape }}
-                  </div>
+                {% for error in form.errors.values %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error|escape }}
+                </div>
                 {% endfor %}
 
                 <form method="post" action="{% url 'signup' %}">

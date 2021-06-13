@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('posts.urls')),
     path('admin/admin', admin.site.urls),
     path('about/', include('about.urls')),
+    path('froala_editor/', include('froala_editor.urls')),
 ]
 
 handler404 = "posts.views.page_not_found"
