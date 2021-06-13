@@ -1,9 +1,9 @@
 import datetime as dt
-from django.utils import timezone
 
+from django.utils import timezone
 from django.db import models
-from froala_editor.fields import FroalaField
 from django.contrib.auth import get_user_model
+from froala_editor.fields import FroalaField
 
 User = get_user_model()
 
