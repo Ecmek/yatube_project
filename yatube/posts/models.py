@@ -3,7 +3,8 @@ import datetime as dt
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth import get_user_model
-from froala_editor.fields import FroalaField
+
+from tinymce import models as tinymce_models
 
 User = get_user_model()
 
@@ -30,7 +31,7 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    text = FroalaField(
+    text = tinymce_models.HTMLField(
         verbose_name='Текст статьи',
         help_text='Что у вас нового?'
     )
@@ -82,7 +83,7 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='Автор комментария',
     )
-    text = FroalaField(
+    text = tinymce_models.HTMLField(
         verbose_name='Комментарий',
         help_text='Напишите комменатрий',
     )

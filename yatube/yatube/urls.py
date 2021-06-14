@@ -25,15 +25,15 @@ urlpatterns = [
     path('', include('posts.urls')),
     path('admin/admin', admin.site.urls),
     path('about/', include('about.urls')),
-    path('froala_editor/', include('froala_editor.urls')),
+    path('tinymce/', include('tinymce.urls')),
 ]
 
-handler404 = "posts.views.page_not_found"
-handler500 = "posts.views.server_error"
+handler404 = 'posts.views.page_not_found'  # noqa
+handler500 = 'posts.views.server_error'  # noqa
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += (path("__debug__/", include(debug_toolbar.urls)),)
+    urlpatterns += (path('__debug__/', include(debug_toolbar.urls)),)
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL,

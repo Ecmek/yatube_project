@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 from django.http import HttpResponseRedirect
 
 from .models import Follow, Post, Group, User
@@ -17,8 +17,7 @@ def index(request):
     paginator = Paginator(latest, paginator_pages)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    form = PostForm()
-    return render(request, 'index.html', {'page': page, 'form': form})
+    return render(request, 'index.html', {'page': page})
 
 
 def group_posts(request, slug):
@@ -30,7 +29,7 @@ def group_posts(request, slug):
     page = paginator.get_page(page_number)
     return render(request, 'group.html', {'group': group, 'page': page})
 
-# @cache_page(20)
+
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     posts = author.posts.select_related('group').prefetch_related('comments')
@@ -98,7 +97,7 @@ def post_edit(request, username, post_id):
     if request.user.username != username:
         return redirect('posts:post', username, post_id)
     post = get_object_or_404(Post, author__username=username, id=post_id)
-    if post.is_recently_pub == False:
+    if not post.is_recently_pub:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     form = PostForm(
         request.POST or None, files=request.FILES or None, instance=post
@@ -106,7 +105,7 @@ def post_edit(request, username, post_id):
     if form.is_valid():
         post = form.save(commit=False)
         post.save()
-        return redirect('posts:post', username, post_id)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     context = {
         'header': 'Редактировать запись',
         'submit_text': 'Сохранить',

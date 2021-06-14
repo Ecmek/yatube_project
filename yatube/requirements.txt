@@ -1,6 +1,5 @@
 Django==2.2.19
 django-debug-toolbar==3.2.1
-django-froala-editor==3.2.2
 Pillow==8.2.0
 pytz==2021.1
 sorl-thumbnail==12.7.0
