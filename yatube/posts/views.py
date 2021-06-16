@@ -63,6 +63,7 @@ def post_view(request, username, post_id):
     form = CommentForm()
     ip = get_client_ip(request)
     Ip.objects.get_or_create(ip=ip)
+    post.views.add(Ip.objects.get(ip=ip))
     following = None
     if request.user.is_authenticated:
         following = author.following.filter(user=request.user).exists()
