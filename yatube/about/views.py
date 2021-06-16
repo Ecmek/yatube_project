@@ -12,7 +12,7 @@ class AboutTechView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['just_title'] = 'Технологии'
         context['just_tech'] = ('<p>Python</p><p>Django 2.2.19</p>'
-                                '<p>Bootstrap</p>')
+                                '<p>Bootstrap</p><p>TinyMCE Editor</p>')
         context['just_text'] = ('<h3>Проект <span style="color:red">Ya</span>'
                                 'TUBE</h3>'
                                 '<p>Благодаря этому проекту вы сможете'

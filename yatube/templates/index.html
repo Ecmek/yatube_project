@@ -2,8 +2,8 @@
 {% block title %}Последние обновления на сайте{% endblock %}
 {% block header %}Последние обновления на сайте{% endblock %}
 {% block content %}
+{% load cache %}
   <div class="container">
-
     {% include "includes/menu.html" with index=True %}
 
     {% for post in page %}
@@ -11,6 +11,5 @@
     {% endfor %}
 
     {% include "includes/paginator.html" with items=page paginator=paginator %}
-
   </div>
 {% endblock %}

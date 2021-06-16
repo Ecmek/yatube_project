@@ -3,7 +3,7 @@
     <nav class="my-2 my-md-0 mr-md-3">
         {% if user.is_authenticated %}
         Пользователь: {{ user.username }}.
-        <a class="btn btn-outline-primary p-2 text-dark" href="{% url 'posts:new_post' %}">Новая запись</a>
+        <a class="btn btn-outline-primary p-2 text-dark" data-toggle="modal" data-target=".newPost" href="#">Новая запись</a>
         <a class="btn btn-outline-primary p-2 text-dark" href="{% url 'password_change' %}">Изменить пароль</a>
         <a class="btn btn-outline-primary p-2 text-dark" href="{% url 'logout' %}">Выйти</a>
         {% else %}
@@ -12,3 +12,37 @@
         {% endif %}
     </nav>
 </nav>
+{% if user.is_authenticated %}
+{% load post_form %}
+{% load user_filters %}
+{% post_form None as post_form %}
+<div class="modal fade newPost" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="card-header">Добавить запись</div> 
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" action="{% url 'posts:new_post' %}">
+        {% csrf_token %}
+
+        {% for field in post_form %}
+        <div class="form-group row" aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+          <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}{% if field.field.required %}<span class="required">*</span>{% endif %}</label>
+            <div class="col-md-8">
+              {{ field }}
+                                      
+              {% if field.help_text %}
+              <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+              {% endif %}
+             </div>                
+        </div>
+        {% endfor %}
+          <div class="col-md-6 offset-md-4">              
+            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Отмена</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

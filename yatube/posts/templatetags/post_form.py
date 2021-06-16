@@ -6,5 +6,5 @@ register = template.Library()
 
 
 @register.simple_tag
-def post_form(post):
-    return PostForm(instance=post or None)
+def post_form(post=None):
+    return PostForm(instance=post)

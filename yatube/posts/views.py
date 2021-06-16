@@ -4,10 +4,19 @@ from django.shortcuts import get_object_or_404, redirect, render
 # from django.views.decorators.cache import cache_page
 from django.http import HttpResponseRedirect
 
-from .models import Follow, Post, Group, User
+from .models import Follow, Post, Group, User, Ip
 from .forms import CommentForm, PostForm
 
 paginator_pages = 10
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 
 # @cache_page(20)
@@ -52,6 +61,8 @@ def post_view(request, username, post_id):
     comments = post.comments.select_related('author')
     author = post.author
     form = CommentForm()
+    ip = get_client_ip(request)
+    Ip.objects.get_or_create(ip=ip)
     following = None
     if request.user.is_authenticated:
         following = author.following.filter(user=request.user).exists()
@@ -105,7 +116,7 @@ def post_edit(request, username, post_id):
     if form.is_valid():
         post = form.save(commit=False)
         post.save()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return redirect('posts:post', username, post_id)
     context = {
         'header': 'Редактировать запись',
         'submit_text': 'Сохранить',

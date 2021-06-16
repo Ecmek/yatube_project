@@ -12,6 +12,7 @@ test_slug = 'test_slug'
 fake_slug = 'fake_slug'
 new_post = 'new'
 post_edit = 'edit'
+post_delete = 'delete'
 follow_index = 'follow'
 profile_follow = 'follow'
 profile_unfollow = 'unfollow'
@@ -71,6 +72,7 @@ class StaticURLTests(TestCase):
             f'/{post_author}/': 200,
             f'/{post_author}/1/': 200,
             f'/{post_author}/1/{post_edit}/': 302,
+            f'/{post_author}/1/{post_delete}/': 302,
             f'/{fake_author}/': 404,
             f'/{fake_author}/1/': 404,
         }

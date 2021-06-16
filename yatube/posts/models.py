@@ -30,6 +30,15 @@ class Group(models.Model):
         return self.title
 
 
+class Ip(models.Model):
+    ip = models.CharField(
+        max_length=100, verbose_name='ip пользователя',
+        )
+
+    def __str__(self):
+        return self.ip
+
+
 class Post(models.Model):
     text = tinymce_models.HTMLField(
         verbose_name='Текст статьи',
@@ -58,6 +67,10 @@ class Post(models.Model):
         verbose_name='Изображение',
         help_text='Можете загрузить изображение',
     )
+    views = models.ManyToManyField(
+        Ip, related_name="post_views",
+        blank=True
+    )
 
     class Meta:
         ordering = ['-pub_date']
@@ -70,6 +83,9 @@ class Post(models.Model):
     def is_recently_pub(self):
         now = timezone.now()
         return self.pub_date >= (now - dt.timedelta(hours=1))
+
+    def total_views(self):
+        return self.views.count()
 
 
 class Comment(models.Model):
