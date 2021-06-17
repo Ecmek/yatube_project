@@ -84,6 +84,49 @@ class PostCreateFormTests(TestCase):
             ).exists()
         )
 
+    def test_author_post_delete_post(self):
+        post_count = Post.objects.count()
+        self.assertEqual(post_count, 0)
+        form_data = {
+            'text': 'Текст поста'
+        }
+        self.authorized_client.post(
+            reverse('posts:new_post'),
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(Post.objects.count(), post_count + 1)
+        post = Post.objects.last()
+        response = self.authorized_client.get(
+            reverse('posts:post_delete',
+                    kwargs={
+                        'username': self.user.username,
+                        'post_id': post.id,
+                    }))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(Post.objects.count(), 0)
+
+    def test_guest_client_delete_post(self):
+        self.assertEqual(Post.objects.count(), 0)
+        form_data = {
+            'text': 'Текст поста'
+        }
+        self.authorized_client.post(
+            reverse('posts:new_post'),
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(Post.objects.count(), 1)
+        post = Post.objects.last()
+        response = self.guest_client.get(
+            reverse('posts:post_delete',
+                    kwargs={
+                        'username': self.user.username,
+                        'post_id': post.id,
+                    }))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(Post.objects.count(), 1)
+
     def test_guest_client_create_post(self):
         # Анонимный пользователь не может создать пост
         form_data = {

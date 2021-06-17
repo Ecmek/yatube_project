@@ -1,17 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Последние обновления на сайте{% endblock %}
-{% block header %}Последние обновления на сайте{% endblock %}
-
-
+{% block title %}Ваши подписки{% endblock %}
+{% block header %}Ваши подписки{% endblock %}
 {% block content %}
-    {% include "includes/menu.html" %}
   <div class="container">
-    <!-- Вывод ленты записей -->
+
+    {% include "includes/menu.html" with follow=True %}
+
     {% for post in page %}
       {% include "includes/post_item.html" with post=post %}
     {% endfor %}
-  </div>
-  <!-- Вывод паджинатора -->
-  {% include "includes/paginator.html" with items=page paginator=paginator%}
 
+    {% include "includes/paginator.html" with items=page paginator=paginator %}
+
+  </div>
 {% endblock %}

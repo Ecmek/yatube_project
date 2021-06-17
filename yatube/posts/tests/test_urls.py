@@ -96,6 +96,7 @@ class StaticURLTests(TestCase):
             f'/{post_author}/': 200,
             f'/{post_author}/1/': 200,
             f'/{post_author}/1/{post_edit}/': 302,
+            f'/{post_author}/1/{post_delete}/': 302,
         }
         for url, response_code in field_response_urls_code.items():
             with self.subTest(url=url):
@@ -112,6 +113,8 @@ class StaticURLTests(TestCase):
             f'/{login}/?next=/{another_user}/{profile_follow}/',
             f'/{another_user}/{profile_unfollow}/':
             f'/{login}/?next=/{another_user}/{profile_unfollow}/',
+            f'/{post_author}/1/{post_delete}/':
+            f'/{login}/?next=/{post_author}/1/{post_delete}/',
         }
         for url, redirect in redirect_response.items():
             with self.subTest(url=url):
@@ -123,12 +126,19 @@ class StaticURLTests(TestCase):
         response = self.authorized_client.get(f'/{post_author}/1/{post_edit}/')
         self.assertRedirects(response, f'/{post_author}/1/')
 
-    def test_author_post_status_code(self):
+    def test_author_post_edit_status_code(self):
         # Доступносить редактирования автору поста
         response = self.post_author.get(
             f'/{post_author}/1/{post_edit}/'
         ).status_code
         self.assertEqual(response, 200)
+
+    def test_author_post_delete_status_code(self):
+        # Доступносить редактирования автору поста
+        response = self.post_author.get(
+            f'/{post_author}/1/{post_delete}/'
+        ).status_code
+        self.assertEqual(response, 302)
 
     def test_urls_use_correct_template(self):
         # Юрл использует соответсвующий шаблон

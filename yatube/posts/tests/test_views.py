@@ -4,14 +4,11 @@ import tempfile
 from django.conf import settings
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from django import forms
 
 from posts.models import Post, Group, User
-
-User = get_user_model()
 
 
 class PostPagesTests(TestCase):
@@ -112,6 +109,7 @@ class PostPagesTests(TestCase):
                 self.assertEqual(page_object.author, object.author)
                 self.assertEqual(page_object.group, object.group)
                 self.assertEqual(page_object.image, object.image)
+                self.assertEqual(page_object.views, object.views)
 
     def test_groups_page_show_correct_context(self):
         context = {reverse('posts:group_slug',
@@ -157,6 +155,7 @@ class PostPagesTests(TestCase):
         self.assertEqual(post_object.author, self.user)
         self.assertEqual(post_object.group, self.group)
         self.assertEqual(post_object.image, self.post.image)
+        self.assertEqual(post_object.views, self.post.views)
 
     def test_forms_show_correct_instance(self):
         context = {
@@ -250,6 +249,7 @@ class PaginatorViewsTest(TestCase):
             self.assertEqual(page_object.group, expected_object.group)
             self.assertEqual(page_object.pub_date,
                              expected_object.pub_date)
+            self.assertEqual(page_object.views, expected_object.views)
 
     def test_object_list_second_page(self):
         response = self.client.get(reverse('posts:index') + '?page=2')
@@ -261,6 +261,7 @@ class PaginatorViewsTest(TestCase):
             self.assertEqual(page_object.group, expected_object.group)
             self.assertEqual(page_object.pub_date,
                              expected_object.pub_date)
+            self.assertEqual(page_object.views, expected_object.views)
 
 
 class CacheIndexPageTest(TestCase):
@@ -333,7 +334,7 @@ class FollowViewsTest(TestCase):
         page_object = response.context.get('page').object_list
         self.assertEqual((len(page_object)), 0)
 
-    def test_u_cant_following_self(self):
+    def test_cant_following_self(self):
         response = self.author_client.get(reverse('posts:follow_index'))
         page_object = response.context.get('page').object_list
         self.assertEqual((len(page_object)), 0)

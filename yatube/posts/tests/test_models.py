@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from posts.models import Post, Group, User, Comment, Follow
+from posts.models import Post, Group, User, Comment, Follow, Ip
 
 
 class PostsModelTest(TestCase):
@@ -19,6 +19,10 @@ class PostsModelTest(TestCase):
             title='Тестовое название группы',
             slug='test-slug',
             description='Тестовое описание группы',
+        )
+        # Создаем ip
+        cls.ip = Ip.objects.create(
+            ip='127.0.0.1'
         )
         # Создаем пост
         cls.post = Post.objects.create(
@@ -89,7 +93,7 @@ class PostsModelTest(TestCase):
                 verbose_name = comment._meta.get_field(value).verbose_name
                 self.assertEqual(verbose_name, expected)
 
-    def test_comment_verbose_name(self):
+    def test_follow_verbose_name(self):
         follow = self.follow
         field_verboses = {
             'user': 'Подписчик',
@@ -104,6 +108,16 @@ class PostsModelTest(TestCase):
         comment = self.comment
         help_text = comment._meta.get_field('text').help_text
         self.assertEqual(help_text, 'Напишите комменатрий')
+
+    def test_ip_verbose_name(self):
+        ip = self.ip
+        field_verboses = {
+            'ip': 'ip пользователя',
+        }
+        for value, expected in field_verboses.items():
+            with self.subTest(value=value):
+                verbose_name = ip._meta.get_field(value).verbose_name
+                self.assertEqual(verbose_name, expected)
 
     def test_object_name(self):
         post = self.post

@@ -27,13 +27,20 @@
           tinycomments_author: 'Author name',
        });
       </script>
+      <script>
+        $(document).on('focusin', function(e) {
+            if ($(e.target).closest(".tox").length) {
+                e.stopImmediatePropagation();
+            }
+        });
+      </script>
 </head>
 
 <body>
     {% include 'includes/nav.html' %}
     <main>
         <div class="container">
-            <h1>{% block header %}{% endblock %}</h1>
+            <h1 class="text-center">{% block header %}{% endblock %}</h1>
             {% block content %}
             <!-- Содержимое страницы -->
             {% endblock %}
