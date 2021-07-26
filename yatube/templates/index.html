@@ -5,7 +5,6 @@
   <div class="container">
 
     {% include "includes/menu.html" with index=True %}
-
     {% for post in page %}
       {% include "includes/post_item.html" with post=post %}
     {% endfor %}

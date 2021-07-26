@@ -20,6 +20,7 @@ from django.conf.urls import handler404, handler500
 from django.urls import path, include
 
 urlpatterns = [
+    path('api/', include('api.urls')),
     path('auth/', include('users.urls')),
     path('auth/', include('django.contrib.auth.urls')),
     path('', include('posts.urls')),

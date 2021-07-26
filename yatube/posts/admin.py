@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Comment, Follow, Group, Post, Ip
+from .models import Comment, Follow, Group, Post, Ip, PageHit
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -29,8 +29,14 @@ class FollowAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+class PageHitAdmin(admin.ModelAdmin):
+    list_display = ('client', 'url', 'count')
+    search_fields = ('url',)
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Ip)
+admin.site.register(PageHit, PageHitAdmin)

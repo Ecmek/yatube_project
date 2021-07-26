@@ -29,9 +29,7 @@
           name="comment_{{ item.id }}"
         >{{ item.author.username }}</a>
       </h5>
-      {% autoescape off %}
-      <p>{{ item.text }}</p>
-      {% endautoescape %}
+      <p>{{ item.text|safe }}</p>
       <small class="text-muted">{{ item.created }}</small>
     </div>
   </div>

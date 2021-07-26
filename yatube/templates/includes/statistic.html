@@ -1,0 +1,25 @@
+<div class="card mb-3 shadow-sm">
+    {% for link in links %}
+  <div class="card-body">
+    <strong class="d-block text-gray-dark">
+        {% ifchanged %}@
+        {{ link.client.username }}
+        {% endifchanged %}
+    </strong></a>
+    Переходил по ссылке 'http://gerg.pythonanywhere.com{{ link.url }}' : {{ link.count }} раз
+  </div>
+  {% endfor %}
+</div>
+
+
+<div class="card mb-3 shadow-sm">
+    {% for page_stat in page_stats %}
+  <div class="card-body">
+    <strong class="d-block text-gray-dark">
+        {% ifchanged %}@{{ page_stat.client.username }}
+        {% endifchanged %}
+    </strong></a>
+    Переходил по ссылке 'http://gerg.pythonanywhere.com{{ page_stat.url }}' : {{ page_stat.count }} раз
+  </div>
+  {% endfor %}
+</div>

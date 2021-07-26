@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 
 from .models import Follow, Post, Group, User, Ip
 from .forms import CommentForm, PostForm
+from .decorators import counted
 
 paginator_pages = 10
 
@@ -19,7 +20,8 @@ def get_client_ip(request):
     return ip
 
 
-@cache_page(5)
+# @cache_page(5)
+@counted
 def index(request):
     latest = Post.objects.select_related('author', 'group').prefetch_related(
         'comments', 'views')
@@ -29,6 +31,7 @@ def index(request):
     return render(request, 'index.html', {'page': page})
 
 
+@counted
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = group.group_posts.select_related('author').prefetch_related(
@@ -39,6 +42,7 @@ def group_posts(request, slug):
     return render(request, 'group.html', {'group': group, 'page': page})
 
 
+@counted
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     posts = author.posts.select_related('group').prefetch_related(
@@ -57,6 +61,7 @@ def profile(request, username):
     return render(request, 'profile.html', context)
 
 
+@counted
 def post_view(request, username, post_id):
     post = get_object_or_404(Post, author__username=username, id=post_id)
     comments = post.comments.select_related('author')
@@ -129,6 +134,7 @@ def post_edit(request, username, post_id):
 
 
 @login_required
+@counted
 def follow_index(request):
     posts = Post.objects.filter(
         author__following__user=request.user

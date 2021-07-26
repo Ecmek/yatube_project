@@ -8,32 +8,27 @@
     <!-- Загрузка статики -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'my_css/mystyle.css' %}">
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="https://cdn.tiny.cloud/1/v6n3qx956yhs0iq8f3a9ju7rvo2cbq4i4eixnw5pv1qmh2dq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <style>
-        .icon {
-            width: 50px;
-            height: 50px;
-        }
-    </style>
-      <script>
-        tinymce.init({
-          selector: 'textarea',
-          plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
-          toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
-          toolbar_mode: 'floating',
-          tinycomments_mode: 'embedded',
-          tinycomments_author: 'Author name',
-       });
-      </script>
-      <script>
-        $(document).on('focusin', function(e) {
-            if ($(e.target).closest(".tox").length) {
-                e.stopImmediatePropagation();
-            }
+    <script src="{% static 'my_scripts/tinymce.js' %}"></script>
+    <script src="{% static 'my_scripts/focus_on_top.js' %}"></script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    
+        ym(81047191, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
         });
-      </script>
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/81047191" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </head>
 
 <body>

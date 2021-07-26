@@ -9,6 +9,28 @@ from tinymce import models as tinymce_models
 User = get_user_model()
 
 
+class Ip(models.Model):
+    ip = models.CharField(
+        max_length=100, verbose_name='ip пользователя',
+        )
+
+    def __str__(self):
+        return self.ip
+
+
+class PageHit(models.Model):
+    client = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='page_hit',
+        verbose_name='Кто переходил',
+    )
+    url = models.CharField(max_length=100)
+    count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['client', '-count']
+
+
 class Group(models.Model):
     title = models.CharField(
         max_length=200, null=False,
@@ -28,15 +50,6 @@ class Group(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class Ip(models.Model):
-    ip = models.CharField(
-        max_length=100, verbose_name='ip пользователя',
-        )
-
-    def __str__(self):
-        return self.ip
 
 
 class Post(models.Model):
