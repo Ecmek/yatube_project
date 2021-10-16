@@ -28,7 +28,7 @@ python manage.py createsuperuser
 ```
 Соберите статику:
 ```
-python manage.py createsuperuser
+python manage.py collectstatic
 ```
 Запуск проекта:
 ```
